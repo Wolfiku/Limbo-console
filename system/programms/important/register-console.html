@@ -35,8 +35,14 @@
 
         p {
             font-size: 16px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             line-height: 1.5;
+        }
+
+        .hint {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-bottom: 30px;
         }
 
         .button {
@@ -48,7 +54,7 @@
             font-weight: bold;
             border-radius: 4px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 10px;
             transition: all 0.3s ease;
         }
 
@@ -117,29 +123,25 @@
 </head>
 <body>
     <div class="container">
-        <!-- Phase 1: Internet Check -->
-        <div id="phase-internet" class="phase">
-            <h1>Limbo Console</h1>
-            <p id="internet-message">Verbindung wird überprüft...</p>
-        </div>
-
-        <!-- Phase 2: Welcome -->
-        <div id="phase-welcome" class="phase hidden">
+        <!-- Phase 1: Welcome -->
+        <div id="phase-welcome" class="phase">
             <h1>Willkommen bei Limbo Console</h1>
             <p>Registriere deine Konsole, um zu starten.</p>
+            <p class="hint">Hinweis: Für die Registrierung wird eine aktive Internetverbindung benötigt.</p>
             <button class="button" onclick="goToCodeInput()">Start</button>
         </div>
 
-        <!-- Phase 3: Code Input -->
+        <!-- Phase 2: Code Input -->
         <div id="phase-code" class="phase hidden">
             <h1>Registrierungscode</h1>
             <p>Gebe deinen Code ein, den du unter<br>https://gaming.wolfiku.de/console/register erhalten hast.</p>
+            <p class="hint">Stelle sicher, dass du mit dem Internet verbunden bist.</p>
             <div id="error-container"></div>
             <input type="text" id="code-input" placeholder="Registrierungscode eingeben" maxlength="50">
             <button class="button" id="code-submit-btn" onclick="submitCode()">Bestätigen</button>
         </div>
 
-        <!-- Phase 4: Confirmation -->
+        <!-- Phase 3: Confirmation -->
         <div id="phase-confirmation" class="phase hidden">
             <h1>Registrierung erfolgreich</h1>
             <p>Deine Konsole wurde registriert.</p>
@@ -205,38 +207,6 @@
             });
         }
 
-        // ==================== Internet Check ====================
-        async function checkInternet() {
-            try {
-                const controller = new AbortController();
-                const timeout = setTimeout(() => controller.abort(), 3000);
-
-                const response = await fetch(API_URL, {
-                    method: 'GET',
-                    signal: controller.signal
-                });
-
-                clearTimeout(timeout);
-                return response.ok;
-            } catch (error) {
-                console.error('Internet check failed:', error);
-                return false;
-            }
-        }
-
-        async function initializeApp() {
-            const internetMessage = document.getElementById('internet-message');
-            const hasInternet = await checkInternet();
-
-            if (!hasInternet) {
-                internetMessage.textContent = 'Bitte verbinde dich mit dem Internet, um fortzufahren.';
-                return;
-            }
-
-            hideAllPhases();
-            document.getElementById('phase-welcome').classList.remove('hidden');
-        }
-
         // ==================== Phase Navigation ====================
         function hideAllPhases() {
             document.querySelectorAll('.phase').forEach(phase => {
@@ -262,7 +232,6 @@
                 return;
             }
 
-            // API ist in deinem Beispiel ein fester Test-Endpunkt, Code wird hier ignoriert
             errorContainer.innerHTML = '<div class="loading">Code wird überprüft...</div>';
             button.disabled = true;
 
@@ -278,6 +247,7 @@
                 const controller = new AbortController();
                 const timeout = setTimeout(() => controller.abort(), 5000);
 
+                // Hinweis: In deinem Beispiel ist API_URL ein fixer Test-Endpunkt
                 const response = await fetch(API_URL, {
                     method: 'GET',
                     signal: controller.signal
@@ -307,7 +277,7 @@
 
             } catch (error) {
                 console.error('Registration error:', error);
-                errorContainer.innerHTML = '<div class="error-message">Fehler bei der Registrierung. Prüfe Internetverbindung und Code.</div>';
+                errorContainer.innerHTML = '<div class="error-message">Fehler bei der Registrierung. Prüfe deine Internetverbindung und den Code.</div>';
                 button.disabled = false;
             }
         }
@@ -347,9 +317,6 @@
                 alert('Fehler beim Speichern. Bitte versuche es erneut.');
             }
         }
-
-        // ==================== Start ====================
-        window.addEventListener('DOMContentLoaded', initializeApp);
     </script>
 </body>
 </html>
