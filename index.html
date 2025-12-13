@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGV1 Game Console</title>
+    <title>Limbo</title>
     <style>
         body {
             margin: 0;
@@ -15,6 +15,12 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+        }
+        
+        .logo {
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
         }
         
         .error-container {
@@ -34,7 +40,82 @@
             margin: 0;
             font-size: 16px;
         }
-        
+    </style>
+</head>
+<body>
+    <div class="logo">Limbo</div>
+
+    <script>
+        const startupPath = 'system/programms/important/startup.html';
+        let redirected = false;
+        let fileExists = null;
+
+        function safeRedirect() {
+            if (!redirected) {
+                redirected = true;
+                window.location.href = startupPath;
+            }
+        }
+
+        function safeShowError() {
+            if (!redirected) {
+                redirected = true;
+                document.body.innerHTML = `
+                    <div class="error-container">
+                        <h1>⚠️ Systemfehler</h1>
+                        <p>Kritische Systemdatei fehlt!<br><br>Die Datei "system/programms/important/startup.html" konnte nicht gefunden werden.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Backup-Timer: Falls nach 4 Sekunden noch nichts passiert ist
+        const emergencyTimer = setTimeout(() => {
+            console.warn('Emergency-Timeout - prüfe Status');
+            if (fileExists === false) {
+                safeShowError();
+            } else {
+                // Bei Unsicherheit versuchen wir die Weiterleitung
+                safeRedirect();
+            }
+        }, 4000);
+
+        // Prüfe ob startup.html existiert (mit eigenem Timeout)
+        const controller = new AbortController();
+        const fetchTimeout = setTimeout(() => controller.abort(), 1500);
+
+        fetch(startupPath, { 
+            method: 'HEAD',
+            signal: controller.signal 
+        })
+            .then(response => {
+                clearTimeout(fetchTimeout);
+                clearTimeout(emergencyTimer);
+                
+                fileExists = response.ok;
+                
+                setTimeout(() => {
+                    if (response.ok) {
+                        safeRedirect();
+                    } else {
+                        safeShowError();
+                    }
+                }, 2500);
+            })
+            .catch(error => {
+                clearTimeout(fetchTimeout);
+                clearTimeout(emergencyTimer);
+                
+                // Bei Netzwerkfehler/Abort: Datei wahrscheinlich nicht erreichbar
+                fileExists = false;
+                
+                setTimeout(() => {
+                    safeShowError();
+                }, 2500);
+            });
+    </script>
+</body>
+</html>        
         .loading {
             text-align: center;
         }
