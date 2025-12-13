@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGV1 Game Console</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .error-container {
+            text-align: center;
+            padding: 40px;
+            background-color: #ff4444;
+            border-radius: 10px;
+            max-width: 500px;
+        }
+        
+        .error-container h1 {
+            margin: 0 0 20px 0;
+            font-size: 24px;
+        }
+        
+        .error-container p {
+            margin: 0;
+            font-size: 16px;
+        }
+        
+        .loading {
+            text-align: center;
+        }
+        
+        .loading p {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <p>System wird geladen...</p>
+    </div>
+
+    <script>
+        // IndexedDB für Setup-Status prüfen
+        const DB_NAME = 'SGV1_SystemDB';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'system_config';
+
+        async function checkSystemSetup() {
+            try {
+                // Versuche auf IndexedDB zuzugreifen
+                const db = await openDatabase();
+                const isSetup = await getSetupStatus(db);
+                db.close();
+
+                if (isSetup) {
+                    // System ist eingerichtet → Homescreen laden
+                    await loadPage('system/programms/important/homescreen.html');
+                } else {
+                    // System nicht eingerichtet → Startup laden
+                    await loadPage('system/programms/important/startup.html');
+                }
+            } catch (error) {
+                console.error('Fehler beim Systemcheck:', error);
+                // Bei DB-Fehler versuchen wir startup zu laden
+                await loadPage('system/programms/important/startup.html');
+            }
+        }
+
+        function openDatabase() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(request.result);
+
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME, { keyPath: 'key' });
+                    }
+                };
+            });
+        }
+
+        function getSetupStatus(db) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], 'readonly');
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.get('setup_complete');
+
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    const result = request.result;
+                    resolve(result && result.value === true);
+                };
+            });
+        }
+
+        async function loadPage(url) {
+            try {
+                // Prüfe ob Datei existiert
+                const response = await fetch(url, { method: 'HEAD' });
+                
+                if (response.ok) {
+                    // Datei existiert → Weiterleiten
+                    window.location.href = url;
+                } else {
+                    // Datei nicht gefunden
+                    showError(`Systemdatei nicht gefunden: ${url}`);
+                }
+            } catch (error) {
+                // Netzwerkfehler oder Datei fehlt
+                showError(`Kritischer Fehler: Systemdateien fehlen!<br><br>Die Datei "${url}" konnte nicht geladen werden.`);
+            }
+        }
+
+        function showError(message) {
+            document.body.innerHTML = `
+                <div class="error-container">
+                    <h1>⚠️ Systemfehler</h1>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        // System beim Laden starten
+        checkSystemSetup();
+    </script>
+</body>
+</html>
