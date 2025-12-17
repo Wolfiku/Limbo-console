@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "displayName": "Gaming Wolfiku",
+  "author": "Wolfiku",
+  "icon": "icon.png",
+  "license": "license.txt",
+  "handbook": "handbook.md",
+  "startFile": "start.html",
+  "description": "Zentrale Plattform für Wolfiku-Spiele und Game-Launcher. Installiere und starte SGV1-Spiele.",
+  "version": "1.0.0",
+  "gameEngine": "SGV1",
+  "supportedFormats": ["sgv1"]
+}
