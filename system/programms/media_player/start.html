@@ -29,10 +29,7 @@
       z-index: 1000;
     }
 
-    .app-title {
-      font-size: 20px;
-      font-weight: bold;
-    }
+    .app-title { font-size: 20px; font-weight: bold; }
 
     .back-btn {
       background-color: #ffffff;
@@ -59,16 +56,119 @@
       overflow-y: auto;
     }
 
-    /* File Browser */
-    .file-browser {
-      max-width: 800px;
+    /* Drag & Drop */
+    .drop-zone {
+      max-width: 600px;
       margin: 0 auto;
+      height: 400px;
+      border: 3px dashed #ffffff;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
     }
 
+    .drop-zone.dragover {
+      border-color: #44ff44;
+      background-color: rgba(68, 255, 68, 0.1);
+    }
+
+    .drop-icon { font-size: 64px; margin-bottom: 20px; opacity: 0.7; }
+
+    /* Custom Media Players */
+    .media-player { display: none; max-width: 1000px; margin: 0 auto; }
+
+    .video-container, .audio-container {
+      background-color: #111111;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .media-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    video { width: 100%; height: 500px; border-radius: 8px; }
+
+    /* Custom Audio Player */
+    .custom-audio-controls {
+      background-color: #1a1a1a;
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .audio-progress {
+      width: 100%;
+      height: 6px;
+      background-color: #333333;
+      border-radius: 3px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .audio-progress-filled {
+      height: 100%;
+      background-color: #ffffff;
+      border-radius: 3px;
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
+    .audio-time {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    .audio-controls {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .audio-btn {
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .audio-btn:hover { background-color: #333333; }
+
+    /* HTML Viewer */
+    .html-viewer iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      background-color: #111111;
+      border-radius: 8px;
+    }
+
+    /* File List */
     .file-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 15px;
+      max-width: 1000px;
+      margin: 20px auto;
     }
 
     .file-item {
@@ -76,99 +176,22 @@
       border: 2px solid #333333;
       border-radius: 12px;
       padding: 20px;
-      text-align: center;
       cursor: pointer;
       transition: all 0.3s ease;
-      height: 120px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
+      gap: 15px;
     }
 
     .file-item:hover {
       border-color: #ffffff;
       background-color: #252525;
-      transform: translateY(-3px);
     }
 
-    .file-icon {
-      font-size: 36px;
-      margin-bottom: 10px;
-    }
-
-    .file-name {
-      font-size: 13px;
-      font-weight: bold;
-      word-break: break-word;
-      opacity: 0.9;
-    }
-
-    .file-type {
-      font-size: 11px;
-      opacity: 0.6;
-      margin-top: 4px;
-    }
-
-    /* Media Player */
-    .media-player {
-      max-width: 900px;
-      margin: 0 auto;
-      display: none;
-    }
-
-    .video-player video,
-    .audio-player audio {
-      width: 100%;
-      height: 500px;
-      background-color: #111111;
-      border-radius: 8px;
-    }
-
-    .audio-player {
-      height: 400px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .audio-player audio {
-      height: 60px;
-      width: 80%;
-    }
-
-    .audio-title {
-      font-size: 18px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    /* Text Viewer */
-    .text-viewer {
-      max-width: 900px;
-      margin: 0 auto;
-      display: none;
-      background-color: #1a1a1a;
-      border: 2px solid #ffffff;
-      border-radius: 12px;
-      padding: 30px;
-      height: 500px;
-      overflow-y: auto;
-      font-family: 'Courier New', monospace;
-      font-size: 14px;
-      line-height: 1.6;
-      white-space: pre-wrap;
-    }
-
-    .loading {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      z-index: 999;
-    }
+    .file-icon { font-size: 32px; }
+    .file-info { flex: 1; }
+    .file-name { font-weight: bold; font-size: 14px; }
+    .file-type { font-size: 12px; opacity: 0.7; }
   </style>
 </head>
 <body>
@@ -177,104 +200,222 @@
     <button class="back-btn" onclick="goBackToHome()">← Homescreen</button>
   </div>
 
-  <div class="loading" id="loading" style="display: none;">
-    <div>Dateien werden geladen...</div>
-  </div>
+  <div class="main-content">
+    <!-- Drag & Drop Zone -->
+    <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+      <div class="drop-icon">📁</div>
+      <div>Dateien hier ablegen oder klicken</div>
+      <div style="font-size: 12px; opacity: 0.7;">Unterstützt: MP4, WebM, HEVC, PNG, JPG, GIF, WebP, HTML, MD, TXT, JSON, MP3</div>
+      <input type="file" id="file-input" multiple style="display: none;" accept="video/*,audio/*,image/*,text/*,.html,.json">
+    </div>
 
-  <!-- File Browser (Standardansicht) -->
-  <div class="main-content" id="file-browser">
-    <div class="file-browser">
-      <div class="file-grid" id="file-grid">
-        <!-- Demo-Dateien werden per JS eingefügt -->
+    <!-- File List -->
+    <div class="file-grid" id="file-list" style="display: none;"></div>
+
+    <!-- Video Player -->
+    <div class="media-player video-container" id="video-player">
+      <div class="media-title" id="video-title">Video</div>
+      <video id="video-element" controls></video>
+    </div>
+
+    <!-- Custom Audio Player -->
+    <div class="media-player audio-container" id="audio-player" style="display: none;">
+      <div class="media-title" id="audio-title">Audio</div>
+      <div class="custom-audio-controls">
+        <div class="audio-controls">
+          <button class="audio-btn" id="audio-prev">⏮</button>
+          <button class="audio-btn" id="audio-play">▶</button>
+          <button class="audio-btn" id="audio-next">⏭</button>
+        </div>
+        <div class="audio-progress" id="audio-progress">
+          <div class="audio-progress-filled" id="audio-progress-filled"></div>
+        </div>
+        <div class="audio-time" id="audio-time">00:00 / 00:00</div>
+        <audio id="audio-element"></audio>
+      </div>
+    </div>
+
+    <!-- HTML Viewer -->
+    <div class="media-player" id="html-player" style="display: none;">
+      <div class="media-title" id="html-title">HTML Datei</div>
+      <div class="html-viewer">
+        <iframe id="html-iframe"></iframe>
       </div>
     </div>
   </div>
 
-  <!-- Video Player -->
-  <div class="main-content media-player" id="video-player">
-    <video id="video-element" controls></video>
-  </div>
-
-  <!-- Audio Player -->
-  <div class="main-content media-player" id="audio-player">
-    <div class="audio-title" id="audio-title">Audio Titel</div>
-    <audio id="audio-element" controls></audio>
-  </div>
-
-  <!-- Text Viewer -->
-  <div class="main-content" id="text-viewer">
-    <div class="text-viewer" id="text-content"></div>
-  </div>
-
   <script>
     const HOMESCREEN_PATH = '../../../../important/homescreen.html';
-    const DEMO_FILES = [
-      { name: "demo-video.mp4", type: "video", icon: "🎥" },
-      { name: "demo-song.mp3", type: "audio", icon: "🎵" },
-      { name: "demo-text.txt", type: "text", icon: "📄" },
-      { name: "demo-music.ogg", type: "audio", icon: "🎶" },
-      { name: "demo-notes.md", type: "text", icon: "📝" },
-      { name: "demo-movie.webm", type: "video", icon: "📺" }
-    ];
+    let files = [];
+    let currentAudioIndex = 0;
 
-    function goBackToHome() {
-      window.location.href = HOMESCREEN_PATH;
+    const SUPPORTED_FORMATS = {
+      video: ['mp4', 'webm', 'hevc', 'mov'],
+      image: ['png', 'jpg', 'jpeg', 'gif', 'webp'],
+      html: ['html', 'htm'],
+      text: ['txt', 'md', 'markdown', 'json'],
+      audio: ['mp3', 'wav', 'ogg', 'm4a']
+    };
+
+    function goBackToHome() { window.location.href = HOMESCREEN_PATH; }
+
+    function hideAllPlayers() {
+      document.querySelectorAll('.media-player').forEach(p => p.style.display = 'none');
+      document.getElementById('drop-zone').style.display = 'flex';
+      document.getElementById('file-list').style.display = 'none';
     }
 
-    function hideAllViews() {
-      document.getElementById('file-browser').style.display = 'block';
-      document.getElementById('video-player').style.display = 'none';
-      document.getElementById('audio-player').style.display = 'none';
-      document.getElementById('text-viewer').style.display = 'none';
+    function getFileType(filename) {
+      const ext = filename.split('.').pop().toLowerCase();
+      for (let [type, formats] of Object.entries(SUPPORTED_FORMATS)) {
+        if (formats.includes(ext)) return type;
+      }
+      return null;
     }
 
-    function showMediaPlayer(type) {
-      hideAllViews();
+    function renderFileList() {
+      const list = document.getElementById('file-list');
+      list.innerHTML = files.map((file, index) => {
+        const type = getFileType(file.name);
+        const icons = { video: '🎥', image: '🖼️', html: '🌐', text: '📄', audio: '🎵' };
+        return `
+          <div class="file-item" onclick="playFile(${index})">
+            <div class="file-icon">${icons[type]}</div>
+            <div class="file-info">
+              <div class="file-name">${file.name}</div>
+              <div class="file-type">[${type.toUpperCase()}]</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      list.style.display = 'grid';
+      document.getElementById('drop-zone').style.display = 'none';
+    }
+
+    async function playFile(index) {
+      const file = files[index];
+      const type = getFileType(file.name);
+      
+      hideAllPlayers();
       
       if (type === 'video') {
+        const video = document.getElementById('video-element');
+        video.src = URL.createObjectURL(file);
+        document.getElementById('video-title').textContent = file.name;
         document.getElementById('video-player').style.display = 'block';
       } else if (type === 'audio') {
-        document.getElementById('audio-player').style.display = 'block';
-      } else if (type === 'text') {
-        document.getElementById('text-viewer').style.display = 'block';
-      }
-    }
-
-    function renderFileBrowser() {
-      const grid = document.getElementById('file-grid');
-      grid.innerHTML = DEMO_FILES.map(file => `
-        <div class="file-item" onclick="playFile('${file.type}', '${file.name}')">
-          <div class="file-icon">${file.icon}</div>
-          <div class="file-name">${file.name}</div>
-          <div class="file-type">${file.type.toUpperCase()}</div>
-        </div>
-      `).join('');
-    }
-
-    function playFile(type, filename) {
-      if (type === 'video') {
-        const video = document.getElementById('video-element');
-        video.src = `data/${filename}`; // Später echte Dateien laden
-        showMediaPlayer('video');
-      } else if (type === 'audio') {
+        currentAudioIndex = index;
         const audio = document.getElementById('audio-element');
-        const title = document.getElementById('audio-title');
-        audio.src = `data/${filename}`;
-        title.textContent = filename;
-        showMediaPlayer('audio');
-      } else if (type === 'text') {
-        // Demo-Text simulieren
-        const content = `# Demo ${filename}\n\nDies ist ein Beispieltext für ${filename}.\n\nIn der echten Version wird hier der Inhalt der Textdatei angezeigt.\n\n**Limbo Media Player v1.0**`;
-        document.getElementById('text-content').textContent = content;
-        showMediaPlayer('text');
+        audio.src = URL.createObjectURL(file);
+        document.getElementById('audio-title').textContent = file.name;
+        document.getElementById('audio-player').style.display = 'block';
+        initAudioPlayer();
+      } else if (type === 'html') {
+        const iframe = document.getElementById('html-iframe');
+        const blob = new Blob([await file.text()], { type: 'text/html' });
+        iframe.src = URL.createObjectURL(blob);
+        document.getElementById('html-title').textContent = file.name;
+        document.getElementById('html-player').style.display = 'block';
+      } else if (type === 'text' || type === 'image') {
+        // Text/Image Preview später
+        alert(`[${type.toUpperCase()}] Preview kommt bald!`);
       }
     }
 
-    // Initialisierung
-    window.addEventListener('DOMContentLoaded', function() {
-      hideAllViews();
-      renderFileBrowser();
+    // Drag & Drop
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, preventDefaults, false);
     });
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
+    });
+
+    dropZone.addEventListener('drop', handleDrop, false);
+    fileInput.addEventListener('change', handleFiles);
+
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = Array.from(dt.files);
+      handleFilesList(files);
+    }
+
+    function handleFiles(e) {
+      handleFilesList(Array.from(e.target.files));
+    }
+
+    function handleFilesList(newFiles) {
+      files = [...files, ...newFiles.filter(f => {
+        const type = getFileType(f.name);
+        return type !== null;
+      })];
+
+      if (files.length > 0) {
+        renderFileList();
+      }
+    }
+
+    // Custom Audio Player
+    function initAudioPlayer() {
+      const audio = document.getElementById('audio-element');
+      const progress = document.getElementById('audio-progress');
+      const progressFilled = document.getElementById('audio-progress-filled');
+      const timeDisplay = document.getElementById('audio-time');
+      const playBtn = document.getElementById('audio-play');
+
+      audio.ontimeupdate = () => {
+        const percent = (audio.currentTime / audio.duration) * 100;
+        progressFilled.style.width = percent + '%';
+        timeDisplay.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
+      };
+
+      progress.onclick = (e) => {
+        const rect = progress.getBoundingClientRect();
+        const pos = (e.clientX - rect.left) / rect.width;
+        audio.currentTime = pos * audio.duration;
+      };
+
+      playBtn.onclick = () => {
+        if (audio.paused) {
+          audio.play();
+          playBtn.textContent = '⏸';
+        } else {
+          audio.pause();
+          playBtn.textContent = '▶';
+        }
+      };
+
+      document.getElementById('audio-prev').onclick = () => {
+        currentAudioIndex = Math.max(0, currentAudioIndex - 1);
+        playFile(currentAudioIndex);
+      };
+
+      document.getElementById('audio-next').onclick = () => {
+        currentAudioIndex = Math.min(files.length - 1, currentAudioIndex + 1);
+        playFile(currentAudioIndex);
+      };
+    }
+
+    function formatTime(seconds) {
+      if (isNaN(seconds)) return '00:00';
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    window.addEventListener('DOMContentLoaded', hideAllPlayers);
   </script>
 </body>
 </html>
