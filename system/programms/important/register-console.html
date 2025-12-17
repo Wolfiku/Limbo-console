@@ -1,322 +1,239 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Limbo Console - Registrierung</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #000000;
-            color: #ffffff;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .container {
-            text-align: center;
-            max-width: 500px;
-            padding: 40px;
-        }
-
-        h1 {
-            font-size: 32px;
-            margin-bottom: 20px;
-            font-weight: normal;
-        }
-
-        p {
-            font-size: 16px;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .hint {
-            font-size: 14px;
-            opacity: 0.8;
-            margin-bottom: 30px;
-        }
-
-        .button {
-            background-color: #ffffff;
-            color: #000000;
-            border: none;
-            padding: 12px 30px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .button:hover {
-            background-color: #cccccc;
-        }
-
-        .button:active {
-            transform: scale(0.98);
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            background-color: #1a1a1a;
-            border: 2px solid #ffffff;
-            color: #ffffff;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #cccccc;
-        }
-
-        .error-message {
-            background-color: #ff4444;
-            color: #ffffff;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        .loading {
-            font-size: 14px;
-            margin-top: 15px;
-        }
-
-        .data-display {
-            background-color: #1a1a1a;
-            border: 2px solid #ffffff;
-            padding: 20px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        .data-display p {
-            margin-bottom: 10px;
-            word-break: break-all;
-        }
-
-        .data-display strong {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Limbo Console - Erste Einrichtung</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000000;
+      color: #ffffff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      text-align: center;
+      max-width: 500px;
+      padding: 40px;
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      font-weight: normal;
+    }
+    p {
+      font-size: 16px;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .hint {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-bottom: 30px;
+    }
+    .button {
+      background-color: #ffffff;
+      color: #000000;
+      border: none;
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+    .button:hover { background-color: #cccccc; }
+    .button:active { transform: scale(0.98); }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background-color: #1a1a1a;
+      border: 2px solid #ffffff;
+      color: #ffffff;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #cccccc;
+    }
+    .error-message {
+      background-color: #ff4444;
+      color: #ffffff;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    .data-display {
+      background-color: #1a1a1a;
+      border: 2px solid #ffffff;
+      padding: 20px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      text-align: left;
+      font-size: 14px;
+    }
+    .data-display p { margin-bottom: 10px; word-break: break-all; }
+    .data-display strong { display: block; margin-bottom: 5px; }
+    .hidden { display: none; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Phase 1: Welcome -->
-        <div id="phase-welcome" class="phase">
-            <h1>Willkommen bei Limbo Console</h1>
-            <p>Registriere deine Konsole, um zu starten.</p>
-            <p class="hint">Hinweis: Für die Registrierung wird eine aktive Internetverbindung benötigt.</p>
-            <button class="button" onclick="goToCodeInput()">Start</button>
-        </div>
+  <div class="container">
+    <!-- Phase 1: Formular -->
+    <div id="phase-form" class="phase">
+      <h1>Limbo Console einrichten</h1>
+      <p>Lege einen Namen für deine Konsole und den Besitzer fest.</p>
+      <p class="hint">Alle Daten werden nur lokal auf diesem Gerät in der Limbo-Datenbank gespeichert.</p>
 
-        <!-- Phase 2: Code Input -->
-        <div id="phase-code" class="phase hidden">
-            <h1>Registrierungscode</h1>
-            <p>Gebe deinen Code ein, den du unter<br>https://gaming.wolfiku.de/console/register erhalten hast.</p>
-            <p class="hint">Stelle sicher, dass du mit dem Internet verbunden bist.</p>
-            <div id="error-container"></div>
-            <input type="text" id="code-input" placeholder="Registrierungscode eingeben" maxlength="50">
-            <button class="button" id="code-submit-btn" onclick="submitCode()">Bestätigen</button>
-        </div>
+      <div id="error-container"></div>
 
-        <!-- Phase 3: Confirmation -->
-        <div id="phase-confirmation" class="phase hidden">
-            <h1>Registrierung erfolgreich</h1>
-            <p>Deine Konsole wurde registriert.</p>
-            <div class="data-display" id="confirmation-data"></div>
-            <button class="button" onclick="finishRegistration()">Fertig</button>
-        </div>
+      <input type="text" id="console-name" placeholder="Konsolenname (z.B. Wolfi Switch)" maxlength="40">
+      <input type="text" id="owner-name" placeholder="Besitzer (z.B. Wolfiku)" maxlength="40">
+
+      <button class="button" onclick="saveProfile()">Speichern</button>
     </div>
 
-    <script>
-        const DB_NAME = 'SGV1_ConsoleDB';
-        const DB_VERSION = 1;
-        const STORE_NAME = 'console_config';
-        const API_URL = 'https://gaming.wolfiku.de/api/console/register/1/test';
+    <!-- Phase 2: Bestätigung -->
+    <div id="phase-confirmation" class="phase hidden">
+      <h1>Konsole eingerichtet</h1>
+      <p>Die Daten deiner Konsole wurden gespeichert.</p>
+      <div class="data-display" id="confirmation-data"></div>
+      <button class="button" onclick="finishSetup()">Fertig</button>
+    </div>
+  </div>
 
-        let consoleData = null;
+  <script>
+    const DB_NAME = 'SGV1_ConsoleDB';
+    const DB_VERSION = 1;
+    const STORE_NAME = 'console_config';
 
-        // ==================== IndexedDB ====================
-        function openDatabase() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, DB_VERSION);
+    function openDatabase() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-                request.onerror = () => reject(request.error);
-                request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve(request.result);
 
-                request.onupgradeneeded = (event) => {
-                    const db = event.target.result;
-                    if (!db.objectStoreNames.contains(STORE_NAME)) {
-                        db.createObjectStore(STORE_NAME, { keyPath: 'key' });
-                    }
-                };
-            });
+        request.onupgradeneeded = (event) => {
+          const db = event.target.result;
+          if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME, { keyPath: 'key' });
+          }
+        };
+      });
+    }
+
+    function saveToDatabase(key, value) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const db = await openDatabase();
+          const tx = db.transaction([STORE_NAME], 'readwrite');
+          const store = tx.objectStore(STORE_NAME);
+          const req = store.put({ key, value });
+
+          req.onerror = () => reject(req.error);
+          req.onsuccess = () => resolve();
+        } catch (err) {
+          reject(err);
         }
+      });
+    }
 
-        function saveToDatabase(key, value) {
-            return new Promise(async (resolve, reject) => {
-                try {
-                    const db = await openDatabase();
-                    const transaction = db.transaction([STORE_NAME], 'readwrite');
-                    const store = transaction.objectStore(STORE_NAME);
-                    const request = store.put({ key: key, value: value });
+    function getFromDatabase(key) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const db = await openDatabase();
+          const tx = db.transaction([STORE_NAME], 'readonly');
+          const store = tx.objectStore(STORE_NAME);
+          const req = store.get(key);
 
-                    request.onerror = () => reject(request.error);
-                    request.onsuccess = () => resolve();
-                } catch (err) {
-                    reject(err);
-                }
-            });
+          req.onerror = () => reject(req.error);
+          req.onsuccess = () => resolve(req.result?.value || null);
+        } catch (err) {
+          reject(err);
         }
+      });
+    }
 
-        function getFromDatabase(key) {
-            return new Promise(async (resolve, reject) => {
-                try {
-                    const db = await openDatabase();
-                    const transaction = db.transaction([STORE_NAME], 'readonly');
-                    const store = transaction.objectStore(STORE_NAME);
-                    const request = store.get(key);
+    function hideAllPhases() {
+      document.querySelectorAll('.phase').forEach(p => p.classList.add('hidden'));
+    }
 
-                    request.onerror = () => reject(request.error);
-                    request.onsuccess = () => resolve(request.result?.value || null);
-                } catch (err) {
-                    reject(err);
-                }
-            });
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text == null ? '' : String(text);
+      return div.innerHTML;
+    }
+
+    async function saveProfile() {
+      const consoleInput = document.getElementById('console-name');
+      const ownerInput = document.getElementById('owner-name');
+      const errorContainer = document.getElementById('error-container');
+
+      const consoleName = consoleInput.value.trim();
+      const ownerName = ownerInput.value.trim();
+
+      if (!consoleName || !ownerName) {
+        errorContainer.innerHTML = '<div class="error-message">Bitte Konsolenname und Besitzer ausfüllen.</div>';
+        return;
+      }
+
+      errorContainer.innerHTML = '';
+
+      const profile = {
+        consoleName,
+        ownerName,
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        await saveToDatabase('console_profile', profile);
+        await saveToDatabase('setup_complete', true);
+
+        const box = document.getElementById('confirmation-data');
+        box.innerHTML = `
+          <p><strong>Konsolenname:</strong> ${escapeHtml(consoleName)}</p>
+          <p><strong>Besitzer:</strong> ${escapeHtml(ownerName)}</p>
+        `;
+
+        hideAllPhases();
+        document.getElementById('phase-confirmation').classList.remove('hidden');
+      } catch (err) {
+        console.error('Fehler beim Speichern:', err);
+        errorContainer.innerHTML = '<div class="error-message">Fehler beim Speichern. Bitte versuche es erneut.</div>';
+      }
+    }
+
+    async function finishSetup() {
+      // zurück zu startup.html im gleichen Ordner
+      window.location.href = './startup.html';
+    }
+
+    // Optional: wenn schon Profil existiert, direkt Confirmation zeigen
+    window.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const profile = await getFromDatabase('console_profile');
+        if (profile) {
+          const box = document.getElementById('confirmation-data');
+          box.innerHTML = `
+            <p><strong>Konsolenname:</strong> ${escapeHtml(profile.consoleName || '')}</p>
+            <p><strong>Besitzer:</strong> ${escapeHtml(profile.ownerName || '')}</p>
+          `;
+          hideAllPhases();
+          document.getElementById('phase-confirmation').classList.remove('hidden');
         }
-
-        // ==================== Phase Navigation ====================
-        function hideAllPhases() {
-            document.querySelectorAll('.phase').forEach(phase => {
-                phase.classList.add('hidden');
-            });
-        }
-
-        function goToCodeInput() {
-            hideAllPhases();
-            document.getElementById('phase-code').classList.remove('hidden');
-            document.getElementById('code-input').focus();
-        }
-
-        // ==================== Code & API ====================
-        async function submitCode() {
-            const codeInput = document.getElementById('code-input');
-            const errorContainer = document.getElementById('error-container');
-            const button = document.getElementById('code-submit-btn');
-            const code = codeInput.value.trim();
-
-            if (!code) {
-                errorContainer.innerHTML = '<div class="error-message">Bitte gebe einen Code ein.</div>';
-                return;
-            }
-
-            errorContainer.innerHTML = '<div class="loading">Code wird überprüft...</div>';
-            button.disabled = true;
-
-            try {
-                // Prüfen, ob Konsole schon registriert ist
-                const alreadyRegistered = await getFromDatabase('console_registered');
-                if (alreadyRegistered) {
-                    errorContainer.innerHTML = '<div class="error-message">Diese Konsole ist bereits registriert.</div>';
-                    button.disabled = false;
-                    return;
-                }
-
-                const controller = new AbortController();
-                const timeout = setTimeout(() => controller.abort(), 5000);
-
-                // Hinweis: In deinem Beispiel ist API_URL ein fixer Test-Endpunkt
-                const response = await fetch(API_URL, {
-                    method: 'GET',
-                    signal: controller.signal
-                });
-
-                clearTimeout(timeout);
-
-                if (!response.ok) {
-                    throw new Error('API Fehler: ' + response.status);
-                }
-
-                const json = await response.json();
-
-                if (!json.success || !json.data) {
-                    errorContainer.innerHTML = '<div class="error-message">Ungültige Antwort vom Server.</div>';
-                    button.disabled = false;
-                    return;
-                }
-
-                consoleData = json.data;
-
-                // Alles lokal speichern (inkl. apiKey & userId)
-                await saveToDatabase('console_config', consoleData);
-                await saveToDatabase('console_registered', true);
-
-                showConfirmation();
-
-            } catch (error) {
-                console.error('Registration error:', error);
-                errorContainer.innerHTML = '<div class="error-message">Fehler bei der Registrierung. Prüfe deine Internetverbindung und den Code.</div>';
-                button.disabled = false;
-            }
-        }
-
-        // ==================== Confirmation ====================
-        function showConfirmation() {
-            const box = document.getElementById('confirmation-data');
-
-            const id = consoleData?.consoleId || 'N/A';
-            const name = consoleData?.consoleName || 'N/A';
-            const purpose = consoleData?.purpose || 'N/A';
-
-            box.innerHTML = `
-                <p><strong>Konsolen ID:</strong> ${escapeHtml(id)}</p>
-                <p><strong>Konsolenname:</strong> ${escapeHtml(name)}</p>
-                <p><strong>Zweck:</strong> ${escapeHtml(purpose)}</p>
-            `;
-
-            hideAllPhases();
-            document.getElementById('phase-confirmation').classList.remove('hidden');
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // ==================== Finish ====================
-        async function finishRegistration() {
-            try {
-                await saveToDatabase('setup_complete', true);
-                // zurück zu startup.html im gleichen Ordner wie register-console.html
-                window.location.href = './startup.html';
-            } catch (error) {
-                console.error('Error finishing registration:', error);
-                alert('Fehler beim Speichern. Bitte versuche es erneut.');
-            }
-        }
-    </script>
+      } catch (e) {
+        // Ignorieren, einfach normales Formular zeigen
+      }
+    });
+  </script>
 </body>
 </html>
