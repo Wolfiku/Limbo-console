@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "displayName": "Media Player",
+  "author": "Wolfiku",
+  "icon": "icon.png",
+  "license": "license.txt",
+  "handbook": "handbook.md",
+  "startFile": "start.html",
+  "description": "Spiele Videos, Musik und andere Medien ab. Unterstützt lokale Dateien und Streams.",
+  "version": "1.0.0",
+  "supportedFormats": ["mp4", "mp3", "ogg", "wav", "webm"]
+}
