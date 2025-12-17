@@ -113,7 +113,8 @@
   </div>
 
   <script>
-    const HOMESCREEN_PATH = '../../../important/homescreen.html';
+    // ✅ KORRIGIERTE HOMESCREEN_PATH (4 Ebenen zurück)
+    const HOMESCREEN_PATH = '../../../../important/homescreen.html';
 
     function goBackToHome() {
       window.location.href = HOMESCREEN_PATH;
@@ -139,7 +140,6 @@
       const loading = document.getElementById('loading');
 
       iframe.onload = function() {
-        // Iframe geladen → Loading ausblenden, Iframe anzeigen
         loading.style.display = 'none';
         container.style.display = 'block';
       };
@@ -148,7 +148,6 @@
         showError('Die Gaming Wolfiku Seite konnte nicht geladen werden.');
       };
 
-      // Fallback: nach 10 Sekunden Fehler anzeigen falls noch loading
       setTimeout(() => {
         if (loading.style.display !== 'none') {
           showError('Timeout: Gaming Wolfiku lädt zu langsam.');
@@ -156,15 +155,12 @@
       }, 10000);
     }
 
-    // Vollbild-Modus (optional)
     document.addEventListener('keydown', function(e) {
       if (e.key === 'F11') {
         e.preventDefault();
-        // Vollbild simulieren (Browser-eigenes F11)
       }
     });
 
-    // App starten
     window.addEventListener('DOMContentLoaded', initApp);
   </script>
 </body>
