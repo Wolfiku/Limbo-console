@@ -1,97 +1,70 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Limbo Console - Startup</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #000000;
-            color: #ffffff;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .container {
-            text-align: center;
-            max-width: 500px;
-            padding: 40px;
-        }
-
-        h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
-            font-weight: normal;
-        }
-
-        p {
-            font-size: 16px;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .button {
-            background-color: #ffffff;
-            color: #000000;
-            border: none;
-            padding: 10px 25px;
-            font-size: 15px;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .button:hover {
-            background-color: #cccccc;
-        }
-
-        .button:active {
-            transform: scale(0.98);
-        }
-
-        .error-message {
-            background-color: #ff4444;
-            color: #ffffff;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        .info-message {
-            background-color: #1a1a1a;
-            border: 1px solid #ffffff;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        .status {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Limbo Console - Startup</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000000;
+      color: #ffffff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      text-align: center;
+      max-width: 500px;
+      padding: 40px;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      font-weight: normal;
+    }
+    p {
+      font-size: 16px;
+      margin-bottom: 15px;
+      line-height: 1.5;
+    }
+    .info-message {
+      background-color: #1a1a1a;
+      border: 1px solid #ffffff;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    .button {
+      background-color: #ffffff;
+      color: #000000;
+      border: none;
+      padding: 10px 25px;
+      font-size: 15px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+    .button:hover { background-color: #cccccc; }
+    .button:active { transform: scale(0.98); }
+    .status {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+  </style>
 </head>
 <body>
-<div class="container" id="content">
+  <div class="container" id="content">
     <h1>Limbo Console</h1>
     <p class="status">System wird gestartet...</p>
-</div>
+  </div>
 
-<script>
-    // === Konfiguration ===
+  <script>
     const DB_NAME = 'SGV1_ConsoleDB';
     const DB_VERSION = 1;
     const STORE_NAME = 'console_config';
@@ -99,170 +72,103 @@
     const REGISTER_PATH = './register-console.html';
     const HOMESCREEN_PATH = './homescreen.html';
 
-    // API: gaming.wolfiku.de/api/console/startup/1/{consoleid}
-    const STARTUP_API_BASE = 'https://gaming.wolfiku.de/api/console/startup/1';
-
-    // === IndexedDB Helpers ===
     function openDatabase() {
-        return new Promise((resolve, reject) => {
-            const request = indexedDB.open(DB_NAME, DB_VERSION);
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-            request.onerror = () => reject(request.error);
-            request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve(request.result);
 
-            request.onupgradeneeded = (event) => {
-                const db = event.target.result;
-                if (!db.objectStoreNames.contains(STORE_NAME)) {
-                    db.createObjectStore(STORE_NAME, { keyPath: 'key' });
-                }
-            };
-        });
+        request.onupgradeneeded = (event) => {
+          const db = event.target.result;
+          if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME, { keyPath: 'key' });
+          }
+        };
+      });
     }
 
     function getFromDatabase(key) {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const db = await openDatabase();
-                const transaction = db.transaction([STORE_NAME], 'readonly');
-                const store = transaction.objectStore(STORE_NAME);
-                const request = store.get(key);
+      return new Promise(async (resolve, reject) => {
+        try {
+          const db = await openDatabase();
+          const tx = db.transaction([STORE_NAME], 'readonly');
+          const store = tx.objectStore(STORE_NAME);
+          const req = store.get(key);
 
-                request.onerror = () => reject(request.error);
-                request.onsuccess = () => resolve(request.result?.value || null);
-            } catch (err) {
-                reject(err);
-            }
-        });
+          req.onerror = () => reject(req.error);
+          req.onsuccess = () => resolve(req.result?.value || null);
+        } catch (err) {
+          reject(err);
+        }
+      });
     }
 
-    // === UI Helpers ===
     function setContent(html) {
-        document.getElementById('content').innerHTML = html;
-    }
-
-    function showError(message, extraButtonHtml = '') {
-        setContent(`
-            <h1>Limbo Console</h1>
-            <div class="error-message">${message}</div>
-            ${extraButtonHtml}
-            <p class="status">Fehler beim Starten der Konsole.</p>
-        `);
+      document.getElementById('content').innerHTML = html;
     }
 
     function goToRegister() {
-        window.location.href = REGISTER_PATH;
+      window.location.href = REGISTER_PATH;
     }
 
     function goToHome() {
-        window.location.href = HOMESCREEN_PATH;
-    }
-
-    // === Startup-Logik ===
-    async function startup() {
-        try {
-            // 1. Konsolendaten aus IndexedDB holen
-            const consoleConfig = await getFromDatabase('console_config');
-
-            if (!consoleConfig || !consoleConfig.consoleId || !consoleConfig.apiKey) {
-                // Keine oder unvollständige Daten → Register
-                setContent(`
-                    <h1>Limbo Console</h1>
-                    <div class="info-message">
-                        Diese Konsole ist noch nicht eingerichtet.<br>
-                        Bitte führe die Registrierung durch.
-                    </div>
-                    <button class="button" onclick="goToRegister()">Zur Registrierung</button>
-                    <p class="status">Fehlende Konsolendaten.</p>
-                `);
-                return;
-            }
-
-            const consoleId = consoleConfig.consoleId;
-            const apiKey = consoleConfig.apiKey;
-
-            // 2. Startup-API aufrufen
-            setContent(`
-                <h1>Limbo Console</h1>
-                <div class="info-message">
-                    Konsole wird verifiziert...<br>
-                    ID: ${escapeHtml(consoleId)}
-                </div>
-                <p class="status">Verbindung zum Server wird geprüft...</p>
-            `);
-
-            const url = `${STARTUP_API_BASE}/${encodeURIComponent(consoleId)}`;
-
-            const controller = new AbortController();
-            const timeout = setTimeout(() => controller.abort(), 5000);
-
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'X-Console-ApiKey': apiKey
-                },
-                signal: controller.signal
-            });
-
-            clearTimeout(timeout);
-
-            if (!response.ok) {
-                throw new Error('Serverfehler: ' + response.status);
-            }
-
-            const json = await response.json();
-
-            // Erwartet: {"status":"verified","message":"..."}
-            const status = (json.status || '').toLowerCase();
-
-            if (status === 'banned') {
-                // Gerät gesperrt
-                showError(
-                    'Diese Konsole wurde gesperrt und kann nicht verwendet werden.<br>' +
-                    escapeHtml(json.message || ''),
-                    ''
-                );
-                return;
-            }
-
-            if (status !== 'verified') {
-                // Nicht verifiziert → zur Sicherheit Registrierung anbieten
-                showError(
-                    'Diese Konsole konnte nicht verifiziert werden (' + escapeHtml(status || 'unbekannt') + ').',
-                    `<button class="button" onclick="goToRegister()">Erneut registrieren</button>`
-                );
-                return;
-            }
-
-            // Alles okay → Homescreen
-            setContent(`
-                <h1>Limbo Console</h1>
-                <div class="info-message">
-                    Konsole erfolgreich verifiziert.<br>
-                    Starte Homescreen...
-                </div>
-                <p class="status">Bitte warten...</p>
-            `);
-
-            setTimeout(goToHome, 1200);
-
-        } catch (err) {
-            console.error('Startup error:', err);
-            showError(
-                'Es ist ein Fehler beim Starten der Konsole aufgetreten.<br>' +
-                'Bitte prüfe deine Internetverbindung und versuche es erneut.',
-                `<button class="button" onclick="startup()">Erneut versuchen</button>`
-            );
-        }
+      window.location.href = HOMESCREEN_PATH;
     }
 
     function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text == null ? '' : String(text);
-        return div.innerHTML;
+      const div = document.createElement('div');
+      div.textContent = text == null ? '' : String(text);
+      return div.innerHTML;
     }
 
-    // Start ausführen
+    async function startup() {
+      try {
+        // Profil- und Setup-Status auslesen
+        const profile = await getFromDatabase('console_profile');
+        const setupComplete = await getFromDatabase('setup_complete');
+
+        if (!profile || !profile.consoleName || !profile.ownerName || !setupComplete) {
+          // Noch nicht eingerichtet → zur Registrierung
+          setContent(`
+            <h1>Limbo Console</h1>
+            <div class="info-message">
+              Diese Konsole ist noch nicht eingerichtet.<br>
+              Du kannst jetzt einen Konsolennamen und einen Besitzer festlegen.
+            </div>
+            <button class="button" onclick="goToRegister()">Konsole einrichten</button>
+            <p class="status">Setup erforderlich.</p>
+          `);
+          return;
+        }
+
+        // Alles da → kurz Infos zeigen, dann Homescreen
+        setContent(`
+          <h1>Limbo Console</h1>
+          <div class="info-message">
+            Willkommen zurück, ${escapeHtml(profile.ownerName)}.<br>
+            Konsole: ${escapeHtml(profile.consoleName)}
+          </div>
+          <p class="status">Homescreen wird geladen...</p>
+        `);
+
+        setTimeout(goToHome, 1200);
+
+      } catch (err) {
+        console.error('Startup error:', err);
+        setContent(`
+          <h1>Limbo Console</h1>
+          <div class="info-message">
+            Es ist ein Fehler beim Lesen der lokalen Daten aufgetreten.<br>
+            Du kannst die Konsole neu einrichten.
+          </div>
+          <button class="button" onclick="goToRegister()">Neu einrichten</button>
+          <p class="status">Fehler beim Laden der Konfiguration.</p>
+        `);
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', startup);
-</script>
+  </script>
 </body>
 </html>
