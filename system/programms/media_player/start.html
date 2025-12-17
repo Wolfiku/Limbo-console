@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Player</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000000;
+      color: #ffffff;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      border-bottom: 2px solid #ffffff;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .app-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .back-btn {
+      background-color: #ffffff;
+      color: #000000;
+      border: none;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover { background-color: #cccccc; }
+    .back-btn:active { transform: scale(0.98); }
+
+    .main-content {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    /* File Browser */
+    .file-browser {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .file-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .file-item {
+      background-color: #1a1a1a;
+      border: 2px solid #333333;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .file-item:hover {
+      border-color: #ffffff;
+      background-color: #252525;
+      transform: translateY(-3px);
+    }
+
+    .file-icon {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .file-name {
+      font-size: 13px;
+      font-weight: bold;
+      word-break: break-word;
+      opacity: 0.9;
+    }
+
+    .file-type {
+      font-size: 11px;
+      opacity: 0.6;
+      margin-top: 4px;
+    }
+
+    /* Media Player */
+    .media-player {
+      max-width: 900px;
+      margin: 0 auto;
+      display: none;
+    }
+
+    .video-player video,
+    .audio-player audio {
+      width: 100%;
+      height: 500px;
+      background-color: #111111;
+      border-radius: 8px;
+    }
+
+    .audio-player {
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .audio-player audio {
+      height: 60px;
+      width: 80%;
+    }
+
+    .audio-title {
+      font-size: 18px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Text Viewer */
+    .text-viewer {
+      max-width: 900px;
+      margin: 0 auto;
+      display: none;
+      background-color: #1a1a1a;
+      border: 2px solid #ffffff;
+      border-radius: 12px;
+      padding: 30px;
+      height: 500px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .loading {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="app-title">Media Player</div>
+    <button class="back-btn" onclick="goBackToHome()">← Homescreen</button>
+  </div>
+
+  <div class="loading" id="loading" style="display: none;">
+    <div>Dateien werden geladen...</div>
+  </div>
+
+  <!-- File Browser (Standardansicht) -->
+  <div class="main-content" id="file-browser">
+    <div class="file-browser">
+      <div class="file-grid" id="file-grid">
+        <!-- Demo-Dateien werden per JS eingefügt -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Player -->
+  <div class="main-content media-player" id="video-player">
+    <video id="video-element" controls></video>
+  </div>
+
+  <!-- Audio Player -->
+  <div class="main-content media-player" id="audio-player">
+    <div class="audio-title" id="audio-title">Audio Titel</div>
+    <audio id="audio-element" controls></audio>
+  </div>
+
+  <!-- Text Viewer -->
+  <div class="main-content" id="text-viewer">
+    <div class="text-viewer" id="text-content"></div>
+  </div>
+
+  <script>
+    const HOMESCREEN_PATH = '../../../../important/homescreen.html';
+    const DEMO_FILES = [
+      { name: "demo-video.mp4", type: "video", icon: "🎥" },
+      { name: "demo-song.mp3", type: "audio", icon: "🎵" },
+      { name: "demo-text.txt", type: "text", icon: "📄" },
+      { name: "demo-music.ogg", type: "audio", icon: "🎶" },
+      { name: "demo-notes.md", type: "text", icon: "📝" },
+      { name: "demo-movie.webm", type: "video", icon: "📺" }
+    ];
+
+    function goBackToHome() {
+      window.location.href = HOMESCREEN_PATH;
+    }
+
+    function hideAllViews() {
+      document.getElementById('file-browser').style.display = 'block';
+      document.getElementById('video-player').style.display = 'none';
+      document.getElementById('audio-player').style.display = 'none';
+      document.getElementById('text-viewer').style.display = 'none';
+    }
+
+    function showMediaPlayer(type) {
+      hideAllViews();
+      
+      if (type === 'video') {
+        document.getElementById('video-player').style.display = 'block';
+      } else if (type === 'audio') {
+        document.getElementById('audio-player').style.display = 'block';
+      } else if (type === 'text') {
+        document.getElementById('text-viewer').style.display = 'block';
+      }
+    }
+
+    function renderFileBrowser() {
+      const grid = document.getElementById('file-grid');
+      grid.innerHTML = DEMO_FILES.map(file => `
+        <div class="file-item" onclick="playFile('${file.type}', '${file.name}')">
+          <div class="file-icon">${file.icon}</div>
+          <div class="file-name">${file.name}</div>
+          <div class="file-type">${file.type.toUpperCase()}</div>
+        </div>
+      `).join('');
+    }
+
+    function playFile(type, filename) {
+      if (type === 'video') {
+        const video = document.getElementById('video-element');
+        video.src = `data/${filename}`; // Später echte Dateien laden
+        showMediaPlayer('video');
+      } else if (type === 'audio') {
+        const audio = document.getElementById('audio-element');
+        const title = document.getElementById('audio-title');
+        audio.src = `data/${filename}`;
+        title.textContent = filename;
+        showMediaPlayer('audio');
+      } else if (type === 'text') {
+        // Demo-Text simulieren
+        const content = `# Demo ${filename}\n\nDies ist ein Beispieltext für ${filename}.\n\nIn der echten Version wird hier der Inhalt der Textdatei angezeigt.\n\n**Limbo Media Player v1.0**`;
+        document.getElementById('text-content').textContent = content;
+        showMediaPlayer('text');
+      }
+    }
+
+    // Initialisierung
+    window.addEventListener('DOMContentLoaded', function() {
+      hideAllViews();
+      renderFileBrowser();
+    });
+  </script>
+</body>
+</html>
