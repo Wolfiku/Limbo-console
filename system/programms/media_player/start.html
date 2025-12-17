@@ -20,25 +20,26 @@
       top: 0;
       left: 0;
       right: 0;
-      background-color: rgba(0, 0, 0, 0.9);
+      background-color: rgba(0, 0, 0, 0.95);
       border-bottom: 2px solid #ffffff;
-      padding: 15px 20px;
+      padding: 12px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 1000;
+      backdrop-filter: blur(10px);
     }
 
-    .app-title { font-size: 20px; font-weight: bold; }
+    .app-title { font-size: 18px; font-weight: bold; }
 
     .back-btn {
       background-color: #ffffff;
       color: #000000;
       border: none;
       padding: 8px 16px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: bold;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
       transition: all 0.3s ease;
     }
@@ -48,21 +49,19 @@
 
     .main-content {
       position: fixed;
-      top: 70px;
+      top: 65px;
       left: 0;
       right: 0;
       bottom: 0;
       padding: 20px;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
     /* Drag & Drop */
     .drop-zone {
-      max-width: 600px;
-      margin: 0 auto;
-      height: 400px;
+      height: calc(100vh - 85px);
       border: 3px dashed #ffffff;
-      border-radius: 16px;
+      border-radius: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -70,6 +69,7 @@
       text-align: center;
       transition: all 0.3s ease;
       cursor: pointer;
+      gap: 15px;
     }
 
     .drop-zone.dragover {
@@ -77,121 +77,219 @@
       background-color: rgba(68, 255, 68, 0.1);
     }
 
-    .drop-icon { font-size: 64px; margin-bottom: 20px; opacity: 0.7; }
+    .drop-icon { font-size: 72px; opacity: 0.7; }
+    .drop-text { font-size: 18px; }
+    .drop-formats { font-size: 12px; opacity: 0.7; max-width: 600px; }
 
-    /* Custom Media Players */
-    .media-player { display: none; max-width: 1000px; margin: 0 auto; }
-
-    .video-container, .audio-container {
-      background-color: #111111;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
+    /* File List */
+    .file-grid {
+      height: calc(100vh - 85px);
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 10px;
+      overflow-y: auto;
     }
 
-    .media-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-
-    video { width: 100%; height: 500px; border-radius: 8px; }
-
-    /* Custom Audio Player */
-    .custom-audio-controls {
+    .file-item {
       background-color: #1a1a1a;
-      border-radius: 8px;
-      padding: 20px;
+      border: 2px solid #333333;
+      border-radius: 16px;
+      padding: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      height: 100px;
+    }
+
+    .file-item:hover {
+      border-color: #ffffff;
+      background-color: #252525;
+      transform: translateY(-4px);
+    }
+
+    .file-icon { font-size: 40px; }
+    .file-info { flex: 1; }
+    .file-name { font-weight: bold; font-size: 15px; margin-bottom: 4px; }
+    .file-type { font-size: 13px; opacity: 0.8; background: #333; padding: 4px 8px; border-radius: 12px; display: inline-block; }
+
+    /* Custom Players - ALLE VOLL-BILD */
+    .media-player {
+      position: fixed;
+      top: 65px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: none;
+      background-color: #000000;
+      overflow: hidden;
+    }
+
+    /* VIDEO PLAYER */
+    .video-player video {
+      width: 100vw;
+      height: calc(100vh - 65px);
+      object-fit: contain;
+      background-color: #000000;
+    }
+
+    /* CUSTOM AUDIO PLAYER */
+    .audio-player {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      gap: 30px;
+      padding: 40px;
+    }
+
+    .audio-waveform {
+      font-size: 4px;
+      letter-spacing: 4px;
+      margin: 20px 0;
+      opacity: 0.6;
+    }
+
+    .custom-audio-controls {
+      background-color: rgba(26, 26, 26, 0.9);
+      border-radius: 20px;
+      padding: 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 15px;
+      gap: 25px;
+      max-width: 600px;
+      width: 90%;
+      backdrop-filter: blur(20px);
+    }
+
+    .audio-title {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 10px;
     }
 
     .audio-progress {
       width: 100%;
-      height: 6px;
+      height: 8px;
       background-color: #333333;
-      border-radius: 3px;
+      border-radius: 4px;
       cursor: pointer;
       position: relative;
     }
 
     .audio-progress-filled {
       height: 100%;
-      background-color: #ffffff;
-      border-radius: 3px;
+      background: linear-gradient(90deg, #ffffff, #44ff44);
+      border-radius: 4px;
       width: 0%;
       transition: width 0.1s ease;
+    }
+
+    .audio-progress-handle {
+      position: absolute;
+      top: -4px;
+      width: 16px;
+      height: 16px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      right: 0;
+      transform: translateX(50%);
+      transition: all 0.2s ease;
     }
 
     .audio-time {
       display: flex;
       justify-content: space-between;
       width: 100%;
-      font-size: 12px;
-      opacity: 0.7;
+      font-size: 14px;
+      opacity: 0.8;
     }
 
     .audio-controls {
       display: flex;
-      gap: 15px;
+      gap: 25px;
       align-items: center;
     }
 
     .audio-btn {
-      background: none;
+      background: rgba(255, 255, 255, 0.2);
       border: none;
       color: #ffffff;
-      font-size: 24px;
+      font-size: 28px;
       cursor: pointer;
-      padding: 10px;
+      padding: 15px;
       border-radius: 50%;
       transition: all 0.3s ease;
-    }
-
-    .audio-btn:hover { background-color: #333333; }
-
-    /* HTML Viewer */
-    .html-viewer iframe {
-      width: 100%;
-      height: 600px;
-      border: none;
-      background-color: #111111;
-      border-radius: 8px;
-    }
-
-    /* File List */
-    .file-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 15px;
-      max-width: 1000px;
-      margin: 20px auto;
-    }
-
-    .file-item {
-      background-color: #1a1a1a;
-      border: 2px solid #333333;
-      border-radius: 12px;
-      padding: 20px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      width: 65px;
+      height: 65px;
       display: flex;
       align-items: center;
-      gap: 15px;
+      justify-content: center;
     }
 
-    .file-item:hover {
-      border-color: #ffffff;
-      background-color: #252525;
+    .audio-btn:hover { background: rgba(255, 255, 255, 0.4); transform: scale(1.05); }
+
+    /* IMAGE PLAYER */
+    .image-player {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      gap: 40px;
     }
 
-    .file-icon { font-size: 32px; }
-    .file-info { flex: 1; }
-    .file-name { font-weight: bold; font-size: 14px; }
-    .file-type { font-size: 12px; opacity: 0.7; }
+    .image-container {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background-color: #111111;
+    }
+
+    /* HTML PLAYER */
+    .html-player iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-color: #111111;
+    }
+
+    /* TEXT PLAYER */
+    .text-player {
+      max-width: 900px;
+      margin: 0 auto;
+      height: calc(100vh - 85px);
+      padding: 40px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 16px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      background-color: #0a0a0a;
+      border-radius: 20px;
+      border: 1px solid #333333;
+    }
+
+    .text-title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 25px;
+      text-align: center;
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body>
@@ -201,26 +299,29 @@
   </div>
 
   <div class="main-content">
-    <!-- Drag & Drop Zone -->
+    <!-- Drag & Drop -->
     <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
       <div class="drop-icon">📁</div>
-      <div>Dateien hier ablegen oder klicken</div>
-      <div style="font-size: 12px; opacity: 0.7;">Unterstützt: MP4, WebM, HEVC, PNG, JPG, GIF, WebP, HTML, MD, TXT, JSON, MP3</div>
+      <div class="drop-text">Dateien hier ablegen oder klicken</div>
+      <div class="drop-formats">
+        🎥 Video: MP4, WebM, HEVC, MOV | 🖼️ Bild: PNG, JPG, GIF, WebP | 
+        🌐 HTML | 📄 Text: MD, TXT, JSON | 🎵 Audio: MP3, WAV, OGG, M4A
+      </div>
       <input type="file" id="file-input" multiple style="display: none;" accept="video/*,audio/*,image/*,text/*,.html,.json">
     </div>
 
     <!-- File List -->
     <div class="file-grid" id="file-list" style="display: none;"></div>
 
-    <!-- Video Player -->
-    <div class="media-player video-container" id="video-player">
-      <div class="media-title" id="video-title">Video</div>
-      <video id="video-element" controls></video>
+    <!-- VIDEO -->
+    <div class="media-player video-player" id="video-player">
+      <video id="video-element" preload="metadata"></video>
     </div>
 
-    <!-- Custom Audio Player -->
-    <div class="media-player audio-container" id="audio-player" style="display: none;">
-      <div class="media-title" id="audio-title">Audio</div>
+    <!-- AUDIO -->
+    <div class="media-player audio-player" id="audio-player">
+      <div class="audio-title" id="audio-title">Audio Titel</div>
+      <div class="audio-waveform">▁▂▃▄▅▆▇█▇▆▅▄▃▂▁</div>
       <div class="custom-audio-controls">
         <div class="audio-controls">
           <button class="audio-btn" id="audio-prev">⏮</button>
@@ -229,36 +330,47 @@
         </div>
         <div class="audio-progress" id="audio-progress">
           <div class="audio-progress-filled" id="audio-progress-filled"></div>
+          <div class="audio-progress-handle"></div>
         </div>
         <div class="audio-time" id="audio-time">00:00 / 00:00</div>
-        <audio id="audio-element"></audio>
+        <audio id="audio-element" preload="metadata"></audio>
       </div>
     </div>
 
-    <!-- HTML Viewer -->
-    <div class="media-player" id="html-player" style="display: none;">
-      <div class="media-title" id="html-title">HTML Datei</div>
-      <div class="html-viewer">
-        <iframe id="html-iframe"></iframe>
+    <!-- IMAGE -->
+    <div class="media-player image-player" id="image-player">
+      <div class="image-container">
+        <img id="image-element" src="">
       </div>
+      <div class="audio-title" id="image-title" style="font-size: 20px;">Bild</div>
+    </div>
+
+    <!-- HTML -->
+    <div class="media-player html-player" id="html-player">
+      <div class="media-title" id="html-title">HTML Datei</div>
+      <iframe id="html-iframe"></iframe>
+    </div>
+
+    <!-- TEXT -->
+    <div class="media-player text-player" id="text-player">
+      <div class="text-title" id="text-title">Text Datei</div>
+      <div id="text-content"></div>
     </div>
   </div>
 
   <script>
     const HOMESCREEN_PATH = '../../../../important/homescreen.html';
-    let files = [];
-    let currentAudioIndex = 0;
+    let files = [], currentAudioIndex = 0;
 
     const SUPPORTED_FORMATS = {
-      video: ['mp4', 'webm', 'hevc', 'mov'],
-      image: ['png', 'jpg', 'jpeg', 'gif', 'webp'],
-      html: ['html', 'htm'],
-      text: ['txt', 'md', 'markdown', 'json'],
-      audio: ['mp3', 'wav', 'ogg', 'm4a']
+      video: ['mp4','webm','hevc','mov','mkv'],
+      image: ['png','jpg','jpeg','gif','webp','bmp'],
+      html: ['html','htm'],
+      text: ['txt','md','markdown','json','log'],
+      audio: ['mp3','wav','ogg','m4a','flac']
     };
 
     function goBackToHome() { window.location.href = HOMESCREEN_PATH; }
-
     function hideAllPlayers() {
       document.querySelectorAll('.media-player').forEach(p => p.style.display = 'none');
       document.getElementById('drop-zone').style.display = 'flex';
@@ -295,30 +407,45 @@
     async function playFile(index) {
       const file = files[index];
       const type = getFileType(file.name);
-      
       hideAllPlayers();
       
-      if (type === 'video') {
-        const video = document.getElementById('video-element');
-        video.src = URL.createObjectURL(file);
-        document.getElementById('video-title').textContent = file.name;
-        document.getElementById('video-player').style.display = 'block';
-      } else if (type === 'audio') {
-        currentAudioIndex = index;
-        const audio = document.getElementById('audio-element');
-        audio.src = URL.createObjectURL(file);
-        document.getElementById('audio-title').textContent = file.name;
-        document.getElementById('audio-player').style.display = 'block';
-        initAudioPlayer();
-      } else if (type === 'html') {
-        const iframe = document.getElementById('html-iframe');
-        const blob = new Blob([await file.text()], { type: 'text/html' });
-        iframe.src = URL.createObjectURL(blob);
-        document.getElementById('html-title').textContent = file.name;
-        document.getElementById('html-player').style.display = 'block';
-      } else if (type === 'text' || type === 'image') {
-        // Text/Image Preview später
-        alert(`[${type.toUpperCase()}] Preview kommt bald!`);
+      try {
+        if (type === 'video') {
+          const video = document.getElementById('video-element');
+          video.src = URL.createObjectURL(file);
+          document.getElementById('video-player').style.display = 'block';
+          video.play();
+        } 
+        else if (type === 'audio') {
+          currentAudioIndex = index;
+          const audio = document.getElementById('audio-element');
+          audio.src = URL.createObjectURL(file);
+          document.getElementById('audio-title').textContent = file.name;
+          document.getElementById('audio-player').style.display = 'flex';
+          initAudioPlayer();
+          audio.play();
+        }
+        else if (type === 'image') {
+          const img = document.getElementById('image-element');
+          img.src = URL.createObjectURL(file);
+          document.getElementById('image-title').textContent = file.name;
+          document.getElementById('image-player').style.display = 'flex';
+        }
+        else if (type === 'html') {
+          const iframe = document.getElementById('html-iframe');
+          const blob = new Blob([await file.text()], { type: 'text/html' });
+          iframe.src = URL.createObjectURL(blob);
+          document.getElementById('html-title').textContent = file.name;
+          document.getElementById('html-player').style.display = 'block';
+        }
+        else if (type === 'text') {
+          const content = await file.text();
+          document.getElementById('text-content').textContent = content;
+          document.getElementById('text-title').textContent = file.name;
+          document.getElementById('text-player').style.display = 'block';
+        }
+      } catch (e) {
+        console.error('Playback error:', e);
       }
     }
 
@@ -326,20 +453,19 @@
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
 
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    ['dragenter','dragover','dragleave','drop'].forEach(eventName => {
       dropZone.addEventListener(eventName, preventDefaults, false);
     });
 
     function preventDefaults(e) {
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
     }
 
-    ['dragenter', 'dragover'].forEach(eventName => {
+    ['dragenter','dragover'].forEach(eventName => {
       dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
     });
 
-    ['dragleave', 'drop'].forEach(eventName => {
+    ['dragleave','drop'].forEach(eventName => {
       dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
     });
 
@@ -348,8 +474,7 @@
 
     function handleDrop(e) {
       const dt = e.dataTransfer;
-      const files = Array.from(dt.files);
-      handleFilesList(files);
+      handleFilesList(Array.from(dt.files));
     }
 
     function handleFiles(e) {
@@ -357,17 +482,11 @@
     }
 
     function handleFilesList(newFiles) {
-      files = [...files, ...newFiles.filter(f => {
-        const type = getFileType(f.name);
-        return type !== null;
-      })];
-
-      if (files.length > 0) {
-        renderFileList();
-      }
+      files = [...files, ...newFiles.filter(f => getFileType(f.name))];
+      if (files.length > 0) renderFileList();
     }
 
-    // Custom Audio Player
+    // CUSTOM AUDIO PLAYER
     function initAudioPlayer() {
       const audio = document.getElementById('audio-element');
       const progress = document.getElementById('audio-progress');
@@ -376,7 +495,7 @@
       const playBtn = document.getElementById('audio-play');
 
       audio.ontimeupdate = () => {
-        const percent = (audio.currentTime / audio.duration) * 100;
+        const percent = (audio.currentTime / audio.duration) * 100 || 0;
         progressFilled.style.width = percent + '%';
         timeDisplay.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
       };
@@ -388,7 +507,7 @@
       };
 
       playBtn.onclick = () => {
-        if (audio.paused) {
+        if (audio.paused || audio.ended) {
           audio.play();
           playBtn.textContent = '⏸';
         } else {
@@ -406,6 +525,8 @@
         currentAudioIndex = Math.min(files.length - 1, currentAudioIndex + 1);
         playFile(currentAudioIndex);
       };
+
+      audio.onended = () => playBtn.textContent = '▶';
     }
 
     function formatTime(seconds) {
