@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gaming Wolfiku</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000000;
+      color: #ffffff;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      border-bottom: 2px solid #ffffff;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .app-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .back-btn {
+      background-color: #ffffff;
+      color: #000000;
+      border: none;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background-color: #cccccc;
+    }
+
+    .back-btn:active {
+      transform: scale(0.98);
+    }
+
+    .iframe-container {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: calc(100vh - 70px);
+    }
+
+    .game-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-color: #111111;
+    }
+
+    .loading {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 999;
+    }
+
+    .error {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #ff4444;
+      color: #ffffff;
+      padding: 40px;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 400px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="app-title">Gaming Wolfiku</div>
+    <button class="back-btn" onclick="goBackToHome()">← Homescreen</button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div>Gaming Wolfiku wird geladen...</div>
+  </div>
+
+  <div class="iframe-container" id="iframe-container" style="display: none;">
+    <iframe class="game-iframe" id="game-iframe" src="https://gaming.wolfiku.de"></iframe>
+  </div>
+
+  <script>
+    const HOMESCREEN_PATH = '../../../important/homescreen.html';
+
+    function goBackToHome() {
+      window.location.href = HOMESCREEN_PATH;
+    }
+
+    function showError(message) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('iframe-container').style.display = 'none';
+      
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error';
+      errorDiv.innerHTML = `
+        <h2>Fehler beim Laden</h2>
+        <p>${message}</p>
+        <button class="back-btn" onclick="goBackToHome()" style="margin-top: 20px;">← Zurück zum Homescreen</button>
+      `;
+      document.body.appendChild(errorDiv);
+    }
+
+    function initApp() {
+      const iframe = document.getElementById('game-iframe');
+      const container = document.getElementById('iframe-container');
+      const loading = document.getElementById('loading');
+
+      iframe.onload = function() {
+        // Iframe geladen → Loading ausblenden, Iframe anzeigen
+        loading.style.display = 'none';
+        container.style.display = 'block';
+      };
+
+      iframe.onerror = function() {
+        showError('Die Gaming Wolfiku Seite konnte nicht geladen werden.');
+      };
+
+      // Fallback: nach 10 Sekunden Fehler anzeigen falls noch loading
+      setTimeout(() => {
+        if (loading.style.display !== 'none') {
+          showError('Timeout: Gaming Wolfiku lädt zu langsam.');
+        }
+      }, 10000);
+    }
+
+    // Vollbild-Modus (optional)
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'F11') {
+        e.preventDefault();
+        // Vollbild simulieren (Browser-eigenes F11)
+      }
+    });
+
+    // App starten
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>
