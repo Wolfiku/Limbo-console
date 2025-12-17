@@ -1,1 +1,27 @@
+{
+  "version": "1.0",
+  "programms": [
+    {
+      "id": "media_player",
+      "name": "Media Player",
+      "folder": "system/programms/media_player",
+      "type": "sgv1",
+      "enabled": true
+    },
+    {
+      "id": "gaming_wolfiku",
+      "name": "Gaming Wolfiku",
+      "folder": "system/programms/gaming_wolfiku",
+      "type": "sgv1",
+      "enabled": true
+    },
+    {
+      "id": "data_manager",
+      "name": "Data Manager",
+      "folder": "system/programms/data_manager",
+      "type": "sgv1",
+      "enabled": true
+    }
+  ]
+}
 
