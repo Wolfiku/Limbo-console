@@ -142,6 +142,14 @@
     const DB_VERSION = 1;
     const STORE_NAME = 'console_config';
 
+    // ✅ KORRIGIERTE launchProgram Funktion
+    function launchProgram(folder) {
+      // Von important/homescreen.html → 3 Ebenen zurück zum Root
+      const rootPath = '../../../';
+      const startPath = rootPath + folder + '/start.html';
+      window.location.href = startPath;
+    }
+
     // Uhr updaten
     function updateClock() {
       const now = new Date();
@@ -150,11 +158,9 @@
       document.getElementById('clock').textContent = `${hours}:${minutes}`;
     }
 
-    // Uhr jede Sekunde aktualisieren
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Einstellungen öffnen (placeholder)
     function openSettings() {
       alert('Einstellungen werden noch entwickelt.');
     }
@@ -205,7 +211,7 @@
           return;
         }
 
-        // Programme als Kästen anzeigen
+        // ✅ Programme mit KORRIGIERTEM Pfad anzeigen
         grid.innerHTML = programs.map(prog => `
           <div class="program-card" onclick="launchProgram('${prog.folder}')">
             <div class="program-icon">📦</div>
@@ -219,20 +225,14 @@
       }
     }
 
-    function launchProgram(folder) {
-      // Pfad zur start.html des Programms
-      const startPath = folder + '/start.html';
-      window.location.href = startPath;
-    }
-
     function escapeHtml(text) {
       const div = document.createElement('div');
       div.textContent = text == null ? '' : String(text);
       return div.innerHTML;
     }
 
-    // Beim Laden starten
     window.addEventListener('DOMContentLoaded', loadPrograms);
   </script>
 </body>
 </html>
+
