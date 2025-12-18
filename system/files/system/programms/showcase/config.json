@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "displayName": "Showcase",
+  "author": "Wolfiku",
+  "icon": "icon.png",
+  "license": "license.txt",
+  "handbook": "handbook.md",
+  "startFile": "start.html",
+  "description": "Präsentiere deine Projekte, Games und Features in einer beeindruckenden Galerie.",
+  "version": "1.0.0",
+  "features": ["project-gallery", "demo-videos", "screenshots", "live-demos"]
+}
